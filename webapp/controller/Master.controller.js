@@ -15,6 +15,12 @@ sap.ui.define([
             formatter: formatter,
 
             onInit: function () {
+                const oRouter = this.getOwnerComponent().getRouter();
+                const routeDetail = oRouter.getRoute("RouteHome")
+                routeDetail.attachPatternMatched(this.onObjectMatched, this);
+            },
+
+            onObjectMatched: function () {
                 const oModel = new ODataModel(this.getOwnerComponent().getManifestObject().resolveUri('v2/fiori'))
 
                 oModel.attachMetadataLoaded(() => {

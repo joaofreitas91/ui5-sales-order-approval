@@ -55,6 +55,7 @@ sap.ui.define([
                 const oModel = new ODataModel(this.getOwnerComponent().getManifestObject().resolveUri('v2/fiori'), {
                     defaultUpdateMethod: UpdateMethod.Merge,
                 })
+
                 const oModelOrders = this.getView().getModel('ordersDetail').getData()
                 const items = oModelOrders.items.results.map(e => ({
                     "items": e.items,
@@ -73,32 +74,11 @@ sap.ui.define([
                         "items": items,
                     }, {
                         success: (oData) => {
-                            MessageBox.success("Solicitação aprovada com sucesso!", {
+                            MessageBox.success("Pedido de venda aprovado.", {
                                 title: "Sucesso",
                                 onClose: function () {
-                                    const oModel = new ODataModel(this.getOwnerComponent().getManifestObject().resolveUri('v2/fiori'))
-
-                                    oModel.attachMetadataLoaded(() => {
-                                        oModel.read(`/SalesOrderDraft(${oModelOrders.ID})`, {
-                                            urlParameters: {
-                                                $expand: "items",
-                                            },
-                                            success: (oData) => {
-                                                var oModel = new JSONModel(oData)
-
-                                                this.getView().setModel(oModel, 'ordersDetail')
-                                            },
-                                            error: (oError) => {
-                                                var msg = 'Erro ao acessar entidade.'
-                                                MessageToast.show(msg);
-                                            }
-                                        })
-                                    });
-
-                                    oModel.attachMetadataFailed(() => {
-                                        var msg = 'Serviço não disponível no momento. Tente novamente mais tarde.'
-                                        MessageToast.show(msg);
-                                    });
+                                    const oRouter = this.getOwnerComponent().getRouter();
+                                    oRouter.navTo("RouteHome");
                                 }.bind(this)
                             });
                         },
@@ -138,35 +118,11 @@ sap.ui.define([
                         "items": items,
                     }, {
                         success: (oData) => {
-                            MessageBox.success("Solicitação aprovada com sucesso!", {
+                            MessageBox.success("Pedido de venda recusado.", {
                                 title: "Sucesso",
                                 onClose: function () {
-                                    const oModel = new ODataModel(this.getOwnerComponent().getManifestObject().resolveUri('v2/fiori'))
-
-                                    oModel.attachMetadataLoaded(() => {
-                                        oModel.read(`/SalesOrderDraft(${oModelOrders.ID})`, {
-                                            urlParameters: {
-                                                $expand: "items",
-                                            },
-                                            success: (oData) => {
-                                                var oModel = new JSONModel(oData)
-
-                                                this.getView().setModel(oModel, 'ordersDetail')
-
-                                                const oRouter = this.getOwnerComponent().getRouter();
-                                                oRouter.navTo("RouteHome");
-                                            },
-                                            error: (oError) => {
-                                                var msg = 'Erro ao acessar entidade.'
-                                                MessageToast.show(msg);
-                                            }
-                                        })
-                                    });
-
-                                    oModel.attachMetadataFailed(() => {
-                                        var msg = 'Serviço não disponível no momento. Tente novamente mais tarde.'
-                                        MessageToast.show(msg);
-                                    });
+                                    const oRouter = this.getOwnerComponent().getRouter();
+                                    oRouter.navTo("RouteHome");
                                 }.bind(this)
                             });
                         },
