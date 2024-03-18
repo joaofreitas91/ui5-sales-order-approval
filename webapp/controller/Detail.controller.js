@@ -116,5 +116,70 @@ sap.ui.define([
 
             },
 
+            onReject: function () {
+                const oModel = new ODataModel(this.getOwnerComponent().getManifestObject().resolveUri('v2/fiori'), {
+                    defaultUpdateMethod: UpdateMethod.Merge,
+                })
+                const oModelOrders = this.getView().getModel('ordersDetail').getData()
+                const items = oModelOrders.items.results.map(e => ({
+                    "items": e.items,
+                    "material": e.material,
+                    "quantity": e.quantity,
+                    "quantity_unit": e.quantity_unit,
+                    "amount": e.amount
+                }))
+
+                oModel.attachMetadataLoaded(() => {
+                    oModel.update(`/SalesOrderDraft(ID=${oModelOrders.ID})`, {
+                        "receiver": "USCU_S02",
+                        "payment_condition": "NT30",
+                        "total_amount": 1000,
+                        "status": "denied",
+                        "items": items,
+                    }, {
+                        success: (oData) => {
+                            MessageBox.success("Solicitação aprovada com sucesso!", {
+                                title: "Sucesso",
+                                onClose: function () {
+                                    const oModel = new ODataModel(this.getOwnerComponent().getManifestObject().resolveUri('v2/fiori'))
+
+                                    oModel.attachMetadataLoaded(() => {
+                                        oModel.read(`/SalesOrderDraft(${oModelOrders.ID})`, {
+                                            urlParameters: {
+                                                $expand: "items",
+                                            },
+                                            success: (oData) => {
+                                                var oModel = new JSONModel(oData)
+
+                                                this.getView().setModel(oModel, 'ordersDetail')
+                                            },
+                                            error: (oError) => {
+                                                var msg = 'Erro ao acessar entidade.'
+                                                MessageToast.show(msg);
+                                            }
+                                        })
+                                    });
+
+                                    oModel.attachMetadataFailed(() => {
+                                        var msg = 'Serviço não disponível no momento. Tente novamente mais tarde.'
+                                        MessageToast.show(msg);
+                                    });
+                                }.bind(this)
+                            });
+                        },
+                        error: (oError) => {
+                            var msg = 'Erro ao criar solicitação.'
+                            MessageToast.show(msg);
+                        }
+                    })
+                });
+
+                oModel.attachMetadataFailed(() => {
+                    var msg = 'Serviço não disponível no momento. Tente novamente mais tarde.'
+                    MessageToast.show(msg);
+                });
+
+            },
+
         });
     });
