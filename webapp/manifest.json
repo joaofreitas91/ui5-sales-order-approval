@@ -110,6 +110,13 @@
           "name": "RouteHome",
           "pattern": "",
           "target": [
+            "TargetMaster"
+          ]
+        },
+        {
+          "name": "RouteDetail",
+          "pattern": "detail/{orderId}",
+          "target": [
             "TargetMaster",
             "TargetDetail"
           ]

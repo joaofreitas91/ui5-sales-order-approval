@@ -1,39 +1,63 @@
 <mvc:View
+    xmlns:core="sap.ui.core"
     controllerName="com.lab2dev.salesorderapproval.controller.Master"
     xmlns:mvc="sap.ui.core.mvc"
     displayBlock="true"
     xmlns="sap.m"
+    xmlns:web="sap.ui.webc.main"
 >
     <Page
         id="page"
-        title="{i18n>title}"
+        showHeader="false"
     >
         <content>
             <List
-                headerText="Custom Content"
+                headerText="Pedidos de Venda"
                 items="{orders>/}"
             >
-                <CustomListItem>
-                    <HBox>
-                        <VBox>
-                            <VBox
-                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"
-                            >
-                                <Label text="{ProductId}" />
-                                <Text text="ewew" />
+                <CustomListItem
+                    type="Active"
+                    press="onListItemPress"
+                >
+                    <HBox
+                        justifyContent="SpaceBetween"
+                        alignItems="Center"
+                    >
+                        <VBox
+                            width="50%"
+                            class="sapUiTinyMargin"
+                        >
+                            <VBox class="sapUiSmallMarginBottom">
+                                <Label text="Order ID" />
+                                <Text text="{orders>ID}" />
                             </VBox>
-                            <VBox
-                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"
-                            >
-                                <Label text="{ProductId}" />
-                                <Text text="ewew" />
+                            <VBox class="sapUiSmallMarginBottom">
+                                <Label text="Data" />
+                                <Text
+                                    text="{
+                                        path: 'orders>createdAt',
+                                        formatter: '.formatter.formatDate'
+                                    }"
+                                />
                             </VBox>
                         </VBox>
-                        <VBox
-                            class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"
-                        >
-                            <Label text="{ProductId}" />
-                            <Text text="ewew" />
+                        <VBox>
+                            <Label text="Status" />
+                            <web:Badge
+                                text="{
+                                    path: 'orders>status',
+                                    formatter: '.formatter.textStatus'
+                                }"
+                                colorScheme="{
+                                    path: 'orders>status',
+                                    formatter: '.formatter.colorStatus'
+                                }"
+                            />
+                        </VBox>
+                        <VBox class="sapUiMediumMarginEnd">
+                            <core:Icon
+                                src="sap-icon://navigation-right-arrow"
+                            />
                         </VBox>
                     </HBox>
                 </CustomListItem>

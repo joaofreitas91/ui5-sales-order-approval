@@ -1,38 +1,157 @@
 <mvc:View
     controllerName="com.lab2dev.salesorderapproval.controller.Detail"
     xmlns:mvc="sap.ui.core.mvc"
-    displayBlock="true"
     xmlns="sap.m"
+    xmlns:t="sap.ui.table"
+    xmlns:web="sap.ui.webc.main"
+    xmlns:chart="sap.suite.ui.microchart"
+    xmlns:u="sap.ui.unified"
+    displayBlock="true"
 >
     <Page
         id="page"
-        title="{i18n>title}"
+        title=""
+        showHeader="false"
+        showFooter="true"
     >
-        <content>
-            <List
-                headerText="Custom Content"
-                items="{path: '/SalesOrderDraft'}"
-            >
-                <CustomListItem>
-                    <HBox>
-                        <core:Icon
-                            size="2rem"
-                            src="sap-icon://attachment-photo"
-                            class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"
-                        />
-                        <VBox
-                            class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"
+        <VBox class="sapUiSmallMarginBottom">
+            <Title
+                text="Pedido {ordersDetail>/ID}"
+                level="H1"
+                class="sapUiMediumMarginBeginEnd sapUiSmallMarginTopBottom"
+            />
+            <VBox class="sapUiMediumMarginBeginEnd">
+                <Panel>
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <Title text="Informações do usuário" />
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <content>
+                        <HBox
+                            alignItems="Center"
+                            justifyContent="SpaceBetween"
+                            width="60%"
                         >
-                            <Link
-                                text="{Name}"
-                                target="{ProductPicUrl}"
-                                press="handlePress"
+                            <VBox
+                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"
+                            >
+                                <Title
+                                    level="H3"
+                                    text="Recebedor da Mercadoria:"
+                                />
+                                <Text text="{ordersDetail>/receiver}" />
+                            </VBox>
+                            <VBox
+                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"
+                            >
+                                <Title
+                                    level="H3"
+                                    text="Status:"
+                                />
+                                <web:Badge
+                                    text="{
+                                    path: 'ordersDetail>/status',
+                                    formatter: '.formatter.textStatus'
+                                }"
+                                    colorScheme="{
+                                    path: 'ordersDetail>/status',
+                                    formatter: '.formatter.colorStatus'
+                                }"
+                                />
+                            </VBox>
+                            <VBox
+                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"
+                            >
+                                <Title
+                                    level="H3"
+                                    text="Condição de Pagamento:"
+                                />
+                                <Text
+                                    text="{ordersDetail>/payment_condition}"
+                                />
+                            </VBox>
+                            <VBox
+                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"
+                            >
+                                <Title
+                                    level="H3"
+                                    text="Data de criação:"
+                                />
+                                <Text text="{ordersDetail>/createdBy}" />
+                            </VBox>
+                        </HBox>
+                    </content>
+                </Panel>
+            </VBox>
+        </VBox>
+        <content>
+            <t:Table
+                id="tableOrders"
+                rows="{ordersDetail>/items/results}"
+                selectionMode="Single"
+                selectionBehavior="RowOnly"
+                class="sapUiMediumMarginBeginEnd"
+            >
+                <t:extension>
+                    <OverflowToolbar>
+                        <Title
+                            id="title"
+                            text="Produtos"
+                        />
+                        <ToolbarSpacer />
+                        <SearchField
+                            width="12rem"
+                            search=".onSearch"
+                        />
+                    </OverflowToolbar>
+                </t:extension>
+                <t:columns>
+                    <t:Column>
+                        <Label text="Products ID" />
+                        <t:template>
+                            <Text
+                                text="{ordersDetail>ID}"
+                                wrapping="false"
                             />
-                            <Label text="{ProductId}" />
-                        </VBox>
-                    </HBox>
-                </CustomListItem>
-            </List>
+                        </t:template>
+                    </t:Column>
+                    <t:Column>
+                        <Label text="Material" />
+                        <t:template>
+                            <Text
+                                text="{ordersDetail>material}"
+                                wrapping="false"
+                            />
+                        </t:template>
+                    </t:Column>
+                    <t:Column>
+                        <Label text="Quantidade" />
+                        <t:template>
+                            <Text
+                                text="{ordersDetail>quantity}"
+                                wrapping="false"
+                            />
+                        </t:template>
+                    </t:Column>
+                </t:columns>
+            </t:Table>
         </content>
+        <footer>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button
+                    text="Recusar"
+                    type="Attention"
+                    press="onReject"
+                />
+                <Button
+                    text="Aprovar"
+                    class="sapUiMediumMarginEnd"
+                    type="Accept"
+                    press="onApprove"
+                />
+            </OverflowToolbar>
+        </footer>
     </Page>
 </mvc:View>

@@ -3,15 +3,18 @@ sap.ui.define([
     "sap/ui/model/odata/v2/ODataModel",
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageToast",
+    "com/lab2dev/salesorderapproval/model/formatter"
 
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, ODataModel, JSONModel, MessageToast) {
+    function (Controller, ODataModel, JSONModel, MessageToast, formatter) {
         "use strict";
 
         return Controller.extend("com.lab2dev.salesorderapproval.controller.Master", {
+            formatter: formatter,
+
             onInit: function () {
                 const oModel = new ODataModel(this.getOwnerComponent().getManifestObject().resolveUri('v2/fiori'))
 
@@ -36,6 +39,14 @@ sap.ui.define([
                     var msg = 'Serviço não disponível no momento. Tente novamente mais tarde.'
                     MessageToast.show(msg);
                 });
+            },
+
+            onListItemPress: function (oEvent) {
+                const oRouter = this.getOwnerComponent().getRouter();
+                const oItem = oEvent.getSource();
+                const oContext = oItem.getBindingContext('orders');
+                const ID = oContext.getProperty('ID');
+                oRouter.navTo("RouteDetail", { orderId: ID });
             }
         });
     });
