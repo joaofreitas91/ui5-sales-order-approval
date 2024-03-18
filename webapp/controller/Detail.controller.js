@@ -152,6 +152,9 @@ sap.ui.define([
                                                 var oModel = new JSONModel(oData)
 
                                                 this.getView().setModel(oModel, 'ordersDetail')
+
+                                                const oRouter = this.getOwnerComponent().getRouter();
+                                                oRouter.navTo("RouteHome");
                                             },
                                             error: (oError) => {
                                                 var msg = 'Erro ao acessar entidade.'
@@ -180,6 +183,5 @@ sap.ui.define([
                 });
 
             },
-
         });
     });

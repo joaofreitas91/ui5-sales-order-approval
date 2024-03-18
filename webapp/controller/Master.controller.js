@@ -4,14 +4,11 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageToast",
     "com/lab2dev/salesorderapproval/model/formatter",
-    "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator",
-
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, ODataModel, JSONModel, MessageToast, formatter, Filter, FilterOperator) {
+    function (Controller, ODataModel, JSONModel, MessageToast, formatter) {
         "use strict";
 
         return Controller.extend("com.lab2dev.salesorderapproval.controller.Master", {
@@ -25,11 +22,8 @@ sap.ui.define([
                         urlParameters: {
                             $expand: "items",
                         },
-                        filters: [
-                            new Filter("status", FilterOperator.EQ, "Pending")
-                        ],
                         success: (oData) => {
-                            var oModel = new JSONModel(oData.results)
+                            var oModel = new JSONModel(oData.results.filter((order) => order.status === 'pending'))
 
                             this.getView().setModel(oModel, 'orders')
                         },

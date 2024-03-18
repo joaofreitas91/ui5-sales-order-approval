@@ -110,7 +110,8 @@
           "name": "RouteHome",
           "pattern": "",
           "target": [
-            "TargetMaster"
+            "TargetMaster",
+            "TargetNoData"
           ]
         },
         {
@@ -137,6 +138,14 @@
           "clearControlAggregation": false,
           "viewId": "Detail",
           "viewName": "Detail",
+          "controlAggregation": "detailPages"
+        },
+        "TargetNoData": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "NoData",
+          "viewName": "NoData",
           "controlAggregation": "detailPages"
         }
       }
