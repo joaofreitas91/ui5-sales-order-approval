@@ -1,0 +1,43 @@
+<mvc:View
+    controllerName="com.lab2dev.salesorderapproval.controller.Master"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+>
+    <Page
+        id="page"
+        title="{i18n>title}"
+    >
+        <content>
+            <List
+                headerText="Custom Content"
+                items="{orders>/}"
+            >
+                <CustomListItem>
+                    <HBox>
+                        <VBox>
+                            <VBox
+                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"
+                            >
+                                <Label text="{ProductId}" />
+                                <Text text="ewew" />
+                            </VBox>
+                            <VBox
+                                class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"
+                            >
+                                <Label text="{ProductId}" />
+                                <Text text="ewew" />
+                            </VBox>
+                        </VBox>
+                        <VBox
+                            class="sapUiSmallMarginBegin sapUiSmallMarginTopBottom"
+                        >
+                            <Label text="{ProductId}" />
+                            <Text text="ewew" />
+                        </VBox>
+                    </HBox>
+                </CustomListItem>
+            </List>
+        </content>
+    </Page>
+</mvc:View>
